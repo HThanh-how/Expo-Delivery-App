@@ -1,0 +1,14 @@
+{
+
+  "paths": {
+    "@app/*": ["./app/*"],
+    "@assets/*": ["./assets/*"],
+    "@components/*": ["./components/*"],
+    "@styles/*": ["./styles/*"],
+    "@utils/*": ["./utils/*"]
+  },
+  "compilerOptions": {
+    "esModuleInterop": true
+  },
+  "extends": "expo/tsconfig.base"
+}
