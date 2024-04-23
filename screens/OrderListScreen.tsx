@@ -2,8 +2,21 @@ import React, {useState} from 'react';
 import {Badge} from 'react-native-elements';
 import {View, Text, TextInput, FlatList, StyleSheet, Image, ScrollView, TouchableOpacity, Modal} from 'react-native';
 import BellIcon from "../assets/icons/notification/1x/baseline_notifications_black_48dp.png";
+import OrderModal from '../components/OrderModal';
 
 export default function OrderListScreen() {
+    const [selectedOrder, setSelectedOrder] = useState(null);
+    const [isModalVisible, setModalVisible] = useState(false);
+
+    const handleCloseModal = () => {
+        setSelectedOrder(null);
+        setModalVisible(false);
+    };
+    const handleOpenModal = (order) => {
+        setSelectedOrder(order);
+        setModalVisible(true);
+    };
+
     const [isPriorityVisible, setPriorityVisible] = useState(true);
     const [isNonPriorityVisible, setNonPriorityVisible] = useState(true);
     const orders = [
@@ -98,15 +111,44 @@ export default function OrderListScreen() {
         },
     ];
 
+
     const orderPriority = orders.filter(order => order.priority);
     const orderNonPriority = orders.filter(order => !order.priority);
+    const OrderList = ({ data }) => (
+        <FlatList
+            data={data}
+            keyExtractor={item => item.id}
+            renderItem={renderItem}
+            nestedScrollEnabled
+        />
+    );
 
-
-
-
+    const renderItem = ({item}) => (
+        <TouchableOpacity onPress={() => handleOpenModal(item)}>
+        <View style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            margin: 20
+        }}>
+            <View style={{flex: 1}}>
+                <Text style={{fontWeight: 'bold', margin: 4, fontSize: 20}}>{item.recipientName}</Text>
+                <Text style={{color: "#6C7072", margin: 4, fontSize: 16}}>{item.address}</Text>
+                <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                    {item.tags.map((tag, index) => renderBadge(tag, index))}
+                </View>
+            </View>
+            <Text style={{
+                fontSize: 20,
+                color: "#6C7072"
+            }}>{item.totalAmount.toLocaleString('vi-VN') + ' VND'}</Text>
+        </View>
+        </TouchableOpacity>
+    );
 
     return (
         <View style={styles.container}>
+
             <View style={styles.header}>
                 <TextInput
                     style={styles.searchBar}
@@ -134,6 +176,11 @@ export default function OrderListScreen() {
                         </View>
                     );
                 }}
+            />
+            <OrderModal
+                selectedOrder={selectedOrder}
+                isModalVisible={isModalVisible}
+                handleCloseModal={handleCloseModal}
             />
         </View>
     );
@@ -168,44 +215,6 @@ const renderBadge = (tag, index) => {
 };
 
 
-const OrderList = ({ data }) => (
-    <FlatList
-        data={data}
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
-        nestedScrollEnabled
-    />
-);
-
-const renderItem = ({item}) => (
-    <View style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        margin: 20
-    }}>
-        <View style={{flex: 1}}>
-            <Text style={{fontWeight: 'bold', margin: 4, fontSize: 20}}>{item.recipientName}</Text>
-            <Text style={{color: "#6C7072", margin: 4, fontSize: 16}}>{item.address}</Text>
-            <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-                {item.tags.map((tag, index) => renderBadge(tag, index))}
-            </View>
-        </View>
-        <Text style={{
-            fontSize: 20,
-            color: "#6C7072"
-        }}>{item.totalAmount.toLocaleString('vi-VN') + ' VND'}</Text>
-    </View>
-);
-
-
-
-
-
-
-
-
-
 
 const styles = StyleSheet.create({
     container: {
@@ -231,5 +240,4 @@ const styles = StyleSheet.create({
         height: 24,
         marginRight: 10,
     },
-
 });
