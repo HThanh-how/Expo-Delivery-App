@@ -1,21 +1,64 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Badge} from 'react-native-elements';
 import {View, Text, TextInput, FlatList, StyleSheet, Image, ScrollView, TouchableOpacity, Modal} from 'react-native';
 import BellIcon from "../assets/icons/notification/1x/baseline_notifications_black_48dp.png";
+import QRCodeIcon from "../assets/icons/qr_code_scanner.png";
 import OrderModal from '../components/OrderModal';
+import axios from 'axios';
+// const CheckCoordinates = () => {
+//     const [coordinates, setCoordinates] = useState(null);
+//     const api_key = "AIzaSyDwwnbEjt8ZWK8DqAi7oyAAtFyXMLLE6iQ";
+//     const address = "1600 Amphitheatre Parkway, Mountain View, CA";
+//
+//     const getCoordinates = async () => {
+//         try {
+//             const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${api_key}`);
+//             if (response.data.status === 'OK') {
+//                 const { lat, lng } = response.data.results[0].geometry.location;
+//                 setCoordinates({ lat, lng });
+//                 console.log('Coordinates:', lat, lng);
+//             } else {
+//                 console.error('Unable to retrieve coordinates');
+//             }
+//         } catch (error) {
+//             console.error(error);
+//         }
+//     };
+//
+//     useEffect(() => {
+//         getCoordinates();
+//     }, []);
+//
+//     return (
+//         <View>
+//             {coordinates ? (
+//                 <Text>Coordinates: {coordinates.lat}, {coordinates.lng}</Text>
+//             ) : (
+//                 <Text>Loading...</Text>
+//             )}
+//         </View>
+//     );
+// };
+//
 
 export default function OrderListScreen() {
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [isModalVisible, setModalVisible] = useState(false);
 
     const handleCloseModal = () => {
+
         setSelectedOrder(null);
         setModalVisible(false);
     };
     const handleOpenModal = (order) => {
+
         setSelectedOrder(order);
         setModalVisible(true);
     };
+
+
+
+
 
     const [isPriorityVisible, setPriorityVisible] = useState(true);
     const [isNonPriorityVisible, setNonPriorityVisible] = useState(true);
@@ -23,14 +66,16 @@ export default function OrderListScreen() {
         // Các đơn hàng hiện tại...
         {
             id: '5',
-            recipientName: 'Người nhận 5',
-            address: 'Địa chỉ 5',
+            recipientName: 'Đức Tuấn',
+            address: 'Ký túc xá Bách Khoa, 497 Hoà Hảo, Phường 7, Quận 10, Thành phố Hồ Chí Minh',
             totalAmount: 500000,
-            tags: ['Giao sáng', 'Cả ngày', 'Giao chiều', 'Giờ hành chính', 'Hàng dễ vỡ', 'Giá trị cao', 'Giao ngoài giờ'],
+            tags: ['Giao sáng', 'Cả ngày', 'Giao chiều', 'Giờ hành chính', 'Hàng dễ vỡ', 'Giá trị cao', 'Giao ngoài giờ', 'Gọi trước'],
             paymentCompleted: true,
+            phoneNumber: '0123456789',
             isPickUp: true,
             priority: true,
             status: 'new',
+            note: 'Gọi trước'
         },
         {
             id: '453',
@@ -150,11 +195,13 @@ export default function OrderListScreen() {
         <View style={styles.container}>
 
             <View style={styles.header}>
+                <Image source={BellIcon} style={styles.notificationIcon}/>
+
                 <TextInput
                     style={styles.searchBar}
                     placeholder="Tìm kiếm..."
                 />
-                <Image source={BellIcon} style={styles.notificationIcon}/>
+                <Image source={QRCodeIcon} style={styles.QrIcon}/>
             </View>
             <FlatList
                 data={[orderPriority, orderNonPriority]}
@@ -192,13 +239,14 @@ const renderBadge = (tag, index) => {
         'Cả ngày': {background: '#b9f6ca', text: '#00c853'}, // green.50 and green.700 in hex
         'Giao chiều': {background: '#b2ebf2', text: '#006064'},
         'Giờ hành chính': {background: '#d1c4e9', text: '#4527a0'},
-        'Hàng dễ vỡ': {background: "#b2ebf2", text: "#4DBCC3"},// orange.50 and orange.700 in hex
+        'Hàng dễ vỡ': {background: "#b3e5fc", text: "#4DBCC3"},// orange.50 and orange.700 in hex
         'Giá trị cao': {background: "#ffcdd2", text: "#f44336"},
-        'Giao ngoài giờ': {background: "#f0f4c3", text: '#827717'}// orange.50 and orange.700 in he
+        'Giao ngoài giờ': {background: "#f0f4c3", text: '#827717'},// orange.50 and orange.700 in he
+        'Gọi trước': {background: '#b2ebf2', text: '#0097a7'},
     };
 
     const colors = badgeColors[tag] || {background: '#f0f4c3', text: '#827717'};
-
+    // CheckCoordinates();
     return (
         <Badge
             key={index}
@@ -238,6 +286,12 @@ const styles = StyleSheet.create({
     notificationIcon: {
         width: 24,
         height: 24,
+        marginLeft: 10,
+    },
+    QrIcon: {
+        width: 24,
+        height: 24,
+
         marginRight: 10,
     },
 });
