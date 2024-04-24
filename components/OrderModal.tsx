@@ -147,18 +147,7 @@ const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
                             <Text style={styles.textStyle}>Hoàn thành</Text>
                         </TouchableOpacity>
                     </View>
-                    {/*<Modal*/}
-                    {/*    animationType="slide"*/}
-                    {/*    transparent={true}*/}
-                    {/*    visible={isDetailModalVisible}*/}
-                    {/*    onRequestClose={() => setDetailModalVisible(false)}*/}
-                    {/*>*/}
-                    {/*    <View style={styles.centeredView}>*/}
-                    {/*        <View style={styles.modalView}>*/}
-                    {/*            /!* Thêm các component để hiển thị chi tiết đơn hàng, ảnh xác nhận và trường nhập mã xác thực *!/*/}
-                    {/*        </View>*/}
-                    {/*    </View>*/}
-                    {/*</Modal>*/}
+
                     {isDetailModalVisible && (
                         <View style={styles.detailModalView}>
                             {/* Thêm các component để hiển thị chi tiết đơn hàng, ảnh xác nhận và trường nhập mã xác thực */}
@@ -199,9 +188,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     modalView: {
-        flex: 1,
-        // flexWrap: 'wrap',
-        height: height * 0.3,
+        flex: 0,
+        flexShrink: 1,
         backgroundColor: "white",
         borderRadius: 20,
         padding: 35,
