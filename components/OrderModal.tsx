@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {View, Text, TouchableOpacity, Modal, StyleSheet, Dimensions, Animated, Linking, Platform} from 'react-native';
 import axios from "axios";
-
+import {Camera, CameraType} from 'expo-camera';
 
 const {width, height} = Dimensions.get('window');
 
@@ -13,7 +13,7 @@ const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
 // Hàm xử lý khi nhấn vào nút "Hoàn thành"
     const handleComplete = (event) => {
         event.stopPropagation();
-        console.log('Hoàn thành đơn hàng:', selectedOrder);
+        // console.log('Hoàn thành đơn hàng:', selectedOrder);
         setDetailModalVisible(true);
     };
 
@@ -61,6 +61,16 @@ const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
         }
     }, [isModalVisible]);
 
+    let cameraRef;
+
+    const takePicture = async () => {
+        if (cameraRef) {
+            const options = {quality: 0.5, base64: true};
+            const data = await cameraRef.takePictureAsync(options);
+            console.log(data.uri);
+        }
+    };
+
     return (
         <Modal
             animationType="none"
@@ -77,7 +87,7 @@ const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
                 }}
             >
                 <View style={styles.overlay}/>
-<Animated.View style={[styles.modalView, {transform: [{scale: scaleValue}]}]}>
+                <Animated.View style={[styles.modalView, {transform: [{scale: scaleValue}]}]}>
                     <TouchableOpacity
                         style={styles.closeButton}
                         onPress={(event) => {
@@ -129,7 +139,22 @@ const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
                             </View>
                         </>
                     )}
-
+                    {isDetailModalVisible && (
+                        <View>
+                            <Camera
+                                ref={ref => {
+                                    cameraRef = ref;
+                                }}
+                                style={{flex: 1, width: '100%'}}
+                            />
+                            <TouchableOpacity
+                                style={styles.captureButton}
+                                onPress={takePicture}
+                            >
+                                <Text style={styles.textStyle}>Chụp ảnh</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         <TouchableOpacity
                             style={{...styles.openButton, backgroundColor: "#4F46E5"}}
@@ -148,11 +173,7 @@ const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
                         </TouchableOpacity>
                     </View>
 
-                    {isDetailModalVisible && (
-                        <View style={styles.detailModalView}>
-                            {/* Thêm các component để hiển thị chi tiết đơn hàng, ảnh xác nhận và trường nhập mã xác thực */}
-                        </View>
-                    )}
+
                 </Animated.View>
             </TouchableOpacity>
         </Modal>
@@ -171,6 +192,15 @@ const styles = StyleSheet.create({
     overlay: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: 'rgba(0,0,0,0.5)'
+    },
+    captureButton: {
+        flex: 0,
+        backgroundColor: '#4F46E5',
+        borderRadius: 5,
+        padding: 15,
+        paddingHorizontal: 20,
+        alignSelf: 'center',
+        margin: 20,
     },
     closeButton: {
         position: 'absolute',
