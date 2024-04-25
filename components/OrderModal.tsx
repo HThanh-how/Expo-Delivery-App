@@ -17,6 +17,10 @@ const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
         setDetailModalVisible(true);
     };
 
+    const handleCloseDetailModal = () => {
+        setDetailModalVisible(false);
+        handleCloseModal();
+    };
     const getCoordinates = async (address) => {
         const api_key = "AIzaSyDwwnbEjt8ZWK8DqAi7oyAAtFyXMLLE6iQ";
         // const address = "1600 Amphitheatre Parkway, Mountain View, CA";
@@ -76,14 +80,15 @@ const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
             animationType="none"
             transparent={true}
             visible={isModalVisible}
-            onRequestClose={handleCloseModal}
+            onRequestClose={handleCloseDetailModal}
         >
             <TouchableOpacity
                 style={styles.centeredView}
                 // activeOpacity={1}
                 onPress={(event) => {
                     event.stopPropagation();
-                    handleCloseModal();
+                    handleCloseDetailModal();
+
                 }}
             >
                 <View style={styles.overlay}/>
@@ -92,13 +97,12 @@ const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
                         style={styles.closeButton}
                         onPress={(event) => {
                             event.stopPropagation();
-                            handleCloseModal();
+                            handleCloseDetailModal();
                         }}
                     >
                         <Text style={styles.closeButtonText}>X</Text>
                     </TouchableOpacity>
-                    {/*<Text style={styles.modalText} onPress={(event) => event.stopPropagation()}>Thông tin chi tiết của*/}
-                    {/*    đơn hàng :</Text>*/}
+
                     {selectedOrder && (
                         <>
                             <Text style={{color: "#808080", fontStyle: 'italic', marginBottom: 16, marginTop: -10}}
