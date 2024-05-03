@@ -7,6 +7,7 @@ import OrderListScreen from './screens/OrderListScreen';
 import MapScreen from './screens/MapScreen';
 import StatisticsScreen from './screens/StatisticsScreen';
 import PersonalScreen from './screens/PersonalScreen';
+import CameraScreen from './screens/CameraScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -28,6 +29,7 @@ export default function App() {
             <Stack.Navigator initialRouteName="Login">
                 <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="Main" component={MainScreen} options={{ headerShown: false }} />
+                <Stack.Screen name="CameraScreen" component={CameraScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     );

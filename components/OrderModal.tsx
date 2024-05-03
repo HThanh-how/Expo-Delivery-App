@@ -1,7 +1,21 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {View, Text, TouchableOpacity, Modal, StyleSheet, Dimensions, Animated, Linking, Platform} from 'react-native';
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    Modal,
+    Image,
+    StyleSheet,
+    Dimensions,
+    Animated,
+    Linking,
+    Platform,
+    TextInput, Button
+} from 'react-native';
 import axios from "axios";
 import {Camera, CameraType} from 'expo-camera';
+import CameraIcon from "../assets/icons/camera.png";
+import { useNavigation } from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window');
 
@@ -144,20 +158,21 @@ const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
                         </>
                     )}
                     {isDetailModalVisible && (
-                        <View>
-                            <Camera
-                                ref={ref => {
-                                    cameraRef = ref;
-                                }}
-                                style={{flex: 1, width: '100%'}}
-                            />
-                            <TouchableOpacity
-                                style={styles.captureButton}
-                                onPress={takePicture}
-                            >
-                                <Text style={styles.textStyle}>Chụp ảnh</Text>
-                            </TouchableOpacity>
-                        </View>
+                        // <View>
+                        //     <Camera
+                        //         ref={ref => {
+                        //             cameraRef = ref;
+                        //         }}
+                        //         style={{flex: 1, width: '100%'}}
+                        //     />
+                        //     <TouchableOpacity
+                        //         style={styles.captureButton}
+                        //         onPress={takePicture}
+                        //     >
+                        //         <Text style={styles.textStyle}>Chụp ảnh</Text>
+                        //     </TouchableOpacity>
+                        // </View>
+                        VerificationCodeInput()
                     )}
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         <TouchableOpacity
@@ -176,14 +191,83 @@ const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
                             <Text style={styles.textStyle}>Hoàn thành</Text>
                         </TouchableOpacity>
                     </View>
-
-
+                    
                 </Animated.View>
             </TouchableOpacity>
         </Modal>
     );
 };
 
+
+
+const VerificationCodeInput = () => {
+
+    return (
+        <View style={styles.inputContainer}>
+            <CameraComponent/>
+            <TextInput
+                style={styles.input}
+                placeholder="Mã xác thực"
+            />
+
+        </View>
+    );
+};
+const CameraComponent = () => {
+    const navigation = useNavigation();
+    const [isCameraVisible, setCameraVisible] = useState(false);
+    const cameraRef = useRef(null);
+
+    // const handleOpenCamera = async () => {
+    //     const { status } = await Camera.requestCameraPermissionsAsync();
+    //     if (status === 'granted') {
+    //         setCameraVisible(true);
+    //     } else {
+    //         console.log('Camera permission not granted');
+    //     }
+    // };
+    const handleOpenCamera = () => {
+        // @ts-ignore
+        navigation.navigate('CameraScreen');
+    };
+    const handleTakePicture = async () => {
+        if (cameraRef.current) {
+            const options = {quality: 0.5, base64: true};
+            const data = await cameraRef.current.takePictureAsync(options);
+            console.log(data.uri);
+            setCameraVisible(false); // Close the camera after taking a picture
+        }
+    };
+
+    const handleCloseCamera = () => {
+        setCameraVisible(false); // Close the camera when the exit button is pressed
+    };
+
+    if (isCameraVisible) {
+        return (
+            <View style={StyleSheet.absoluteFill}>
+                <Camera ref={cameraRef} style={StyleSheet.absoluteFill} />
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={handleTakePicture} style={styles.button}>
+                        <Text style={styles.text}>Chụp ảnh</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={handleCloseCamera} style={styles.button}>
+                        <Text style={styles.text}>Thoát</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        );
+    }
+
+    return (
+        <TouchableOpacity onPress={handleOpenCamera}>
+            <Image
+                source={CameraIcon}
+                style={styles.icon}
+            />
+        </TouchableOpacity>
+    );
+};
 export default OrderModal;
 
 const styles = StyleSheet.create({
@@ -272,5 +356,48 @@ const styles = StyleSheet.create({
         // height: '100%',
         backgroundColor: 'white',
         padding: 20,
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: '#4F46E5',
+        borderRadius: 5,
+        marginTop: 30,
+        marginBottom:30
+    },
+    input: {
+        flex: 1,
+        padding: 10,
+    },
+    icon: {
+        width: 20,
+        height: 20,
+        marginRight: 10,
+        marginLeft: 20,
+        // color: '#4F46E5',
+    },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+    camera: {
+        flex: 1,
+    },
+    buttonContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        backgroundColor: 'transparent',
+        margin: 64,
+    },
+    button: {
+        flex: 1,
+        alignSelf: 'flex-end',
+        alignItems: 'center',
+    },
+    text: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: 'white',
     },
 });
