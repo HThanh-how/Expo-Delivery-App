@@ -1,15 +1,33 @@
-import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, Button } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, TextInput, View, Button} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const LoginScreen = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigation = useNavigation();
-    const handleLogin = () => {
+
+    useEffect(() => {
+        const checkLoginStatus = async () => {
+            const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
+            if (isLoggedIn !== null) {
+                // @ts-ignore
+                navigation.navigate('Main');
+            }
+        };
+
+        checkLoginStatus();
+    }, []);
+    const handleLogin = async () => {
         // Thực hiện hành động đăng nhập ở đây
         console.log(`Username: ${username}, Password: ${password}`);
         // @ts-ignore
         navigation.navigate('Main');
+        try {
+            await AsyncStorage.setItem('isLoggedIn', '1');
+        } catch (error) {
+            // Error saving data
+        }
     };
 
     return (

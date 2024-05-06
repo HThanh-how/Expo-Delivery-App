@@ -4,12 +4,13 @@ import {View, Text, TextInput, FlatList, StyleSheet, Image, ScrollView, Touchabl
 import BellIcon from "../assets/icons/notification/1x/baseline_notifications_black_48dp.png";
 import QRCodeIcon from "../assets/icons/qr_code_scanner.png";
 import OrderModal from '../components/OrderModal';
-import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+
 
 export default function OrderListScreen() {
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [isModalVisible, setModalVisible] = useState(false);
-    const navigation = useNavigation();
+
     const handleCloseModal = () => {
 
         setSelectedOrder(null);
@@ -135,38 +136,32 @@ export default function OrderListScreen() {
 
     const renderItem = ({item}) => (
         <TouchableOpacity onPress={() => handleOpenModal(item)}>
-        <View style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            margin: 20
-        }}>
-            <View style={{flex: 1}}>
-                <Text style={{fontWeight: 'bold', margin: 4, fontSize: 20}}>{item.recipientName}</Text>
-                <Text style={{color: "#6C7072", margin: 4, fontSize: 16}}>{item.address}</Text>
-                <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-                    {item.tags.map((tag, index) => renderBadge(tag, index))}
+            <View style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                margin: 20
+            }}>
+                <View style={{flex: 1}}>
+                    <Text style={{fontWeight: 'bold', margin: 4, fontSize: 20}}>{item.recipientName}</Text>
+                    <Text style={{color: "#6C7072", margin: 4, fontSize: 16}}>{item.address}</Text>
+                    <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                        {item.tags.map((tag, index) => renderBadge(tag, index))}
+                    </View>
                 </View>
+                <Text style={{
+                    fontSize: 20,
+                    color: "#6C7072"
+                }}>{item.totalAmount.toLocaleString('vi-VN') + ' VND'}</Text>
             </View>
-            <Text style={{
-                fontSize: 20,
-                color: "#6C7072"
-            }}>{item.totalAmount.toLocaleString('vi-VN') + ' VND'}</Text>
-        </View>
         </TouchableOpacity>
     );
-
-    // @ts-ignore
-    // @ts-ignore
 
     return (
         <View style={styles.container}>
 
             <View style={styles.header}>
-
-                <TouchableOpacity onPress={() => navigation.navigate('NotificationScreen')}>
-                    <Image source={BellIcon} style={styles.notificationIcon}/>
-                </TouchableOpacity>
+                <Image source={BellIcon} style={styles.notificationIcon}/>
 
                 <TextInput
                     style={styles.searchBar}

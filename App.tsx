@@ -8,6 +8,7 @@ import MapScreen from './screens/MapScreen';
 import StatisticsScreen from './screens/StatisticsScreen';
 import PersonalScreen from './screens/PersonalScreen';
 import CameraScreen from './screens/CameraScreen';
+import NotificationScreen from './screens/NotificationScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -30,6 +31,7 @@ export default function App() {
                 <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="Main" component={MainScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="CameraScreen" component={CameraScreen} />
+                <Stack.Screen name="NotificationScreen" component={NotificationScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     );
