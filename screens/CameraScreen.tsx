@@ -27,14 +27,16 @@ const CameraScreen = () => {
 
     return (
         <View style={styles.container}>
-            <Camera ref={cameraRef} style={styles.camera} />
-            {photo && (
-                <Image source={{ uri: photo }} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
-            )}
+        <Camera ref={cameraRef} style={styles.camera} />
+{photo && (
+    <View style={styles.overlay}>
+        <Image source={{ uri: photo }} style={styles.camera} />
+    </View>
+)}
             <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={handleTakePicture} style={styles.button}>
-                    <Text style={styles.text}>Chụp ảnh</Text>
-                </TouchableOpacity>
+                {!photo&&<TouchableOpacity onPress={handleTakePicture} style={styles.captureButton}>
+    <View style={styles.innerCaptureButton} />
+</TouchableOpacity>}
                 {photo && (
                     <>
                         <TouchableOpacity onPress={handleSavePicture} style={styles.button}>
@@ -54,8 +56,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: '100%',
+        backgroundColor: 'black',
     },
     camera: {
+        flex: 1,
+        width: '100%',
+    },
+    imagePreview: {
         flex: 1,
         width: '100%',
     },
@@ -75,6 +82,28 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'gray',
     },
+    captureButton: {
+    alignSelf: 'center',
+        alignItems: 'center',
+    backgroundColor: 'transparent',
+    borderRadius: 50,
+    borderWidth: 5,
+    borderColor: 'white',
+    height: 70,
+    width: 70,
+    justifyContent: 'center',
+    marginBottom: 30,
+},
+innerCaptureButton: {
+    backgroundColor: 'white',
+    borderRadius: 35,
+    height: 59,
+    width: 59,
+},
+    overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.5)'
+},
 });
 
 export default CameraScreen;

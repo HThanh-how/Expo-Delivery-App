@@ -5,7 +5,7 @@ import BellIcon from "../assets/icons/notification/1x/baseline_notifications_bla
 import QRCodeIcon from "../assets/icons/qr_code_scanner.png";
 import OrderModal from '../components/OrderModal';
 import { useNavigation } from '@react-navigation/native';
-
+import orders from '../_lib/api/apiSilde';
 export default function OrderListScreen() {
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [isModalVisible, setModalVisible] = useState(false);
@@ -27,99 +27,7 @@ export default function OrderListScreen() {
 
     const [isPriorityVisible, setPriorityVisible] = useState(true);
     const [isNonPriorityVisible, setNonPriorityVisible] = useState(true);
-    const orders = [
-        // Các đơn hàng hiện tại...
-        {
-            id: '5',
-            recipientName: 'Đức Tuấn',
-            address: 'Ký túc xá Bách Khoa, 497 Hoà Hảo, Phường 7, Quận 10, Thành phố Hồ Chí Minh',
-            totalAmount: 500000,
-            tags: ['Giao sáng', 'Cả ngày', 'Giao chiều', 'Giờ hành chính', 'Hàng dễ vỡ', 'Giá trị cao', 'Giao ngoài giờ', 'Gọi trước'],
-            paymentCompleted: true,
-            phoneNumber: '0123456789',
-            isPickUp: true,
-            priority: true,
-            status: 'new',
-            note: 'Gọi trước'
-        },
-        {
-            id: '453',
-            recipientName: 'Người nhận 5',
-            address: 'Địa chỉ 5',
-            totalAmount: 500000,
-            tags: ['Giao sáng', 'Cả ngày', 'Giao chiều', 'Giờ hành chính', 'Hàng dễ vỡ', 'Giá trị cao', 'Giao ngoài giờ'],
-            paymentCompleted: true,
-            isPickUp: true,
-            priority: false,
-            status: 'new',
-        },
-        {
-            id: '123',
-            recipientName: 'Người nhận 5',
-            address: 'Địa chỉ 5',
-            totalAmount: 500000,
-            tags: ['Giao sáng', 'Cả ngày', 'Giao chiều', 'Giờ hành chính', 'Hàng dễ vỡ', 'Giá trị cao', 'Giao ngoài giờ'],
-            paymentCompleted: true,
-            isPickUp: true,
-            priority: false,
-            status: 'new',
-        },
-        {
-            id: '6',
-            recipientName: 'Người nhận 6',
-            address: 'Địa chỉ 6',
-            totalAmount: 600000,
-            tags: ['tag11', 'tag12'],
-            paymentCompleted: true,
-            isPickUp: true,
-            priority: true,
-            status: 'late',
-        },
-        {
-            id: '7',
-            recipientName: 'Người nhận 7',
-            address: 'Địa chỉ 7',
-            totalAmount: 700000,
-            tags: ['tag13', 'tag14'],
-            paymentCompleted: true,
-            isPickUp: true,
-            priority: true,
-            status: 'delete',
-        },
-        {
-            id: '8',
-            recipientName: 'Người nhận 8',
-            address: 'Địa chỉ 8',
-            totalAmount: 800000,
-            tags: ['tag15', 'tag16'],
-            paymentCompleted: true,
-            isPickUp: true,
-            priority: true,
-            status: 'change',
-        },
-        {
-            id: '9',
-            recipientName: 'Người nhận 9',
-            address: 'Địa chỉ 9',
-            totalAmount: 900000,
-            tags: ['tag17', 'tag18'],
-            paymentCompleted: true,
-            isPickUp: true,
-            priority: true,
-            status: 'normal',
-        },
-        {
-            id: '10',
-            recipientName: 'Người nhận 10',
-            address: 'Địa chỉ 10',
-            totalAmount: 1000000,
-            tags: ['tag19', 'tag20'],
-            paymentCompleted: true,
-            isPickUp: true,
-            priority: true,
-            status: 'normal',
-        },
-    ];
+
 
 
     const orderPriority = orders.filter(order => order.priority);

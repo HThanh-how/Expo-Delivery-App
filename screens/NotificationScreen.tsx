@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {Badge} from 'react-native-elements';
-import {View, Text, TextInput, FlatList, StyleSheet, Image, ScrollView, TouchableOpacity, Modal} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Badge } from 'react-native-elements';
+import { View, Text, TextInput, FlatList, StyleSheet, Image, ScrollView, TouchableOpacity, Modal } from 'react-native';
 import BellIcon from "../assets/icons/notification/1x/baseline_notifications_black_48dp.png";
 import QRCodeIcon from "../assets/icons/qr_code_scanner.png";
 import OrderModal from '../components/OrderModal';
 import axios from 'axios';
+import orders from '../_lib/api/apiSilde';
 
 
 export default function OrderListScreen() {
@@ -28,100 +29,7 @@ export default function OrderListScreen() {
 
     const [isPriorityVisible, setPriorityVisible] = useState(true);
     const [isNonPriorityVisible, setNonPriorityVisible] = useState(true);
-    const orders = [
-        // Các đơn hàng hiện tại...
-        {
-            id: '5',
-            recipientName: 'Đức Tuấn',
-            address: 'Ký túc xá Bách Khoa, 497 Hoà Hảo, Phường 7, Quận 10, Thành phố Hồ Chí Minh',
-            totalAmount: 500000,
-            tags: ['Giao sáng', 'Cả ngày', 'Giao chiều', 'Giờ hành chính', 'Hàng dễ vỡ', 'Giá trị cao', 'Giao ngoài giờ', 'Gọi trước'],
-            paymentCompleted: true,
-            phoneNumber: '0123456789',
-            isPickUp: true,
-            priority: true,
-            status: 'new',
-            note: 'Gọi trước'
-        },
-        {
-            id: '453',
-            recipientName: 'Người nhận 5',
-            address: 'Địa chỉ 5',
-            totalAmount: 500000,
-            tags: ['Giao sáng', 'Cả ngày', 'Giao chiều', 'Giờ hành chính', 'Hàng dễ vỡ', 'Giá trị cao', 'Giao ngoài giờ'],
-            paymentCompleted: true,
-            isPickUp: true,
-            priority: false,
-            status: 'new',
-        },
-        {
-            id: '123',
-            recipientName: 'Người nhận 5',
-            address: 'Địa chỉ 5',
-            totalAmount: 500000,
-            tags: ['Giao sáng', 'Cả ngày', 'Giao chiều', 'Giờ hành chính', 'Hàng dễ vỡ', 'Giá trị cao', 'Giao ngoài giờ'],
-            paymentCompleted: true,
-            isPickUp: true,
-            priority: false,
-            status: 'new',
-        },
-        {
-            id: '6',
-            recipientName: 'Người nhận 6',
-            address: 'Địa chỉ 6',
-            totalAmount: 600000,
-            tags: ['tag11', 'tag12'],
-            paymentCompleted: true,
-            isPickUp: true,
-            priority: true,
-            status: 'late',
-        },
-        {
-            id: '7',
-            recipientName: 'Người nhận 7',
-            address: 'Địa chỉ 7',
-            totalAmount: 700000,
-            tags: ['tag13', 'tag14'],
-            paymentCompleted: true,
-            isPickUp: true,
-            priority: true,
-            status: 'delete',
-        },
-        {
-            id: '8',
-            recipientName: 'Người nhận 8',
-            address: 'Địa chỉ 8',
-            totalAmount: 800000,
-            tags: ['tag15', 'tag16'],
-            paymentCompleted: true,
-            isPickUp: true,
-            priority: true,
-            status: 'change',
-        },
-        {
-            id: '9',
-            recipientName: 'Người nhận 9',
-            address: 'Địa chỉ 9',
-            totalAmount: 900000,
-            tags: ['tag17', 'tag18'],
-            paymentCompleted: true,
-            isPickUp: true,
-            priority: true,
-            status: 'normal',
-        },
-        {
-            id: '10',
-            recipientName: 'Người nhận 10',
-            address: 'Địa chỉ 10',
-            totalAmount: 1000000,
-            tags: ['tag19', 'tag20'],
-            paymentCompleted: true,
-            isPickUp: true,
-            priority: true,
-            status: 'normal',
-        },
-    ];
-
+    
 
     const orderPriority = orders.filter(order => order.priority);
     const orderNonPriority = orders.filter(order => !order.priority);
@@ -134,7 +42,7 @@ export default function OrderListScreen() {
         />
     );
 
-    const renderItem = ({item}) => (
+    const renderItem = ({ item }) => (
         <TouchableOpacity onPress={() => handleOpenModal(item)}>
             <View style={{
                 flexDirection: 'row',
@@ -142,17 +50,21 @@ export default function OrderListScreen() {
                 justifyContent: 'space-between',
                 margin: 20
             }}>
-                <View style={{flex: 1}}>
-                    <Text style={{fontWeight: 'bold', margin: 4, fontSize: 20}}>{item.recipientName}</Text>
-                    <Text style={{color: "#6C7072", margin: 4, fontSize: 16}}>{item.address}</Text>
-                    <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                <View style={{ flex: 1 }}>
+                    <Text style={{ fontWeight: 'bold', margin: 4, fontSize: 20 }}>{item.recipientName}</Text>
+                    <Text style={{ color: "#6C7072", margin: 4, fontSize: 16 }}>{item.address}</Text>
+                    <Text style={{
+                        margin: 4,
+                        color: "#6C7072"
+                    }}>{item.totalAmount.toLocaleString('vi-VN') + ' VND'}</Text>
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                         {item.tags.map((tag, index) => renderBadge(tag, index))}
                     </View>
                 </View>
                 <Text style={{
                     fontSize: 20,
                     color: "#6C7072"
-                }}>{item.totalAmount.toLocaleString('vi-VN') + ' VND'}</Text>
+                }}>{formatTimeReceived(item.timeRecieve)}</Text>
             </View>
         </TouchableOpacity>
     );
@@ -161,13 +73,13 @@ export default function OrderListScreen() {
         <View style={styles.container}>
 
             <View style={styles.header}>
-                <Image source={BellIcon} style={styles.notificationIcon}/>
+                <Image source={BellIcon} style={styles.notificationIcon} />
 
                 <TextInput
                     style={styles.searchBar}
                     placeholder="Tìm kiếm..."
                 />
-                <Image source={QRCodeIcon} style={styles.QrIcon}/>
+                <Image source={QRCodeIcon} style={styles.QrIcon} />
             </View>
             <FlatList
                 data={[orderPriority, orderNonPriority]}
@@ -179,11 +91,11 @@ export default function OrderListScreen() {
                     return (
                         <View>
                             <TouchableOpacity
-                                style={{flexDirection: 'row', justifyContent: 'space-between', margin: 10}}
+                                style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 10 }}
                                 onPress={() => setVisible(!isVisible)}
                             >
-                                <Text style={{fontWeight: 'bold', fontSize: 24}}>{index === 0 ? 'Ưu tiên' : 'Bình thường'}</Text>
-                                <Text style={{color: "#6C7072"}}>Tổng cộng: {item.length}</Text>
+                                <Text style={{ fontWeight: 'bold', fontSize: 24 }}>{index === 0 ? 'Ưu tiên' : 'Bình thường'}</Text>
+                                <Text style={{ color: "#6C7072" }}>Tổng cộng: {item.length}</Text>
                             </TouchableOpacity>
                             {isVisible && <OrderList data={item} />}
                         </View>
@@ -199,19 +111,52 @@ export default function OrderListScreen() {
     );
 };
 
+
+function formatTimeReceived(timeReceived: string): string {
+let now = new Date();
+let timeReceivedDate = new Date(timeReceived);   
+  const diffInSeconds = Math.floor((now.getTime() - timeReceivedDate.getTime()) / 1000);
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  const diffInDays = Math.floor(diffInHours / 24);
+  const diffInMonths = Math.floor(diffInDays / 30);
+  const diffInYears = Math.floor(diffInDays / 365);
+
+  if (diffInSeconds < 30) {
+    return "Mới nhất";
+  } else if (diffInSeconds < 60) {
+    return "Gần đây";
+  } else if (diffInMinutes < 60) {
+    return `${diffInMinutes} phút`;
+  } else if (diffInHours < 10) {
+    return `${diffInHours} giờ`;
+  } else if (diffInHours < 24) {
+    return "Hôm nay";
+  } else if (diffInDays === 1) {
+    return "Hôm qua";
+  } else if (diffInDays === 2) {
+    return "Hôm kia";
+  } else if (diffInDays < 30) {
+    return `${diffInDays} ngày`;
+  } else if (diffInMonths < 12) {
+    return `${diffInMonths} tháng`;
+  } else {
+    return `${diffInYears} năm`;
+  }
+}
 const renderBadge = (tag, index) => {
     const badgeColors = {
-        'Giao sáng': {background: '#b3e5fc', text: '#0091ea'}, // blue.50 and blue.700 in hex
-        'Cả ngày': {background: '#b9f6ca', text: '#00c853'}, // green.50 and green.700 in hex
-        'Giao chiều': {background: '#b2ebf2', text: '#006064'},
-        'Giờ hành chính': {background: '#d1c4e9', text: '#4527a0'},
-        'Hàng dễ vỡ': {background: "#b3e5fc", text: "#4DBCC3"},// orange.50 and orange.700 in hex
-        'Giá trị cao': {background: "#ffcdd2", text: "#f44336"},
-        'Giao ngoài giờ': {background: "#f0f4c3", text: '#827717'},// orange.50 and orange.700 in he
-        'Gọi trước': {background: '#b2ebf2', text: '#0097a7'},
+        'Giao sáng': { background: '#b3e5fc', text: '#0091ea' }, // blue.50 and blue.700 in hex
+        'Cả ngày': { background: '#b9f6ca', text: '#00c853' }, // green.50 and green.700 in hex
+        'Giao chiều': { background: '#b2ebf2', text: '#006064' },
+        'Giờ hành chính': { background: '#d1c4e9', text: '#4527a0' },
+        'Hàng dễ vỡ': { background: "#b3e5fc", text: "#4DBCC3" },// orange.50 and orange.700 in hex
+        'Giá trị cao': { background: "#ffcdd2", text: "#f44336" },
+        'Giao ngoài giờ': { background: "#f0f4c3", text: '#827717' },// orange.50 and orange.700 in he
+        'Gọi trước': { background: '#b2ebf2', text: '#0097a7' },
     };
 
-    const colors = badgeColors[tag] || {background: '#f0f4c3', text: '#827717'};
+    const colors = badgeColors[tag] || { background: '#f0f4c3', text: '#827717' };
     // CheckCoordinates();
     return (
         <Badge
@@ -223,7 +168,7 @@ const renderBadge = (tag, index) => {
                 minHeight: 25,
                 borderRadius: 20
             }}
-            textStyle={{color: colors.text, margin: 1, fontSize: 10}}
+            textStyle={{ color: colors.text, margin: 1, fontSize: 10 }}
         />
     );
 };

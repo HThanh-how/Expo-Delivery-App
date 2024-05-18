@@ -31,7 +31,7 @@ export default function App() {
                 <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="Main" component={MainScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="CameraScreen" component={CameraScreen} />
-                <Stack.Screen name="NotificationScreen" component={NotificationScreen} />
+                <Stack.Screen name="NotificationScreen" component={NotificationScreen}     options={{ title: 'Thông báo' }} />
             </Stack.Navigator>
         </NavigationContainer>
     );
