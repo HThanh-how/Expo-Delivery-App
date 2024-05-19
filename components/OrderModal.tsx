@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
     View,
     Text,
@@ -13,13 +13,14 @@ import {
     TextInput, Button, Pressable
 } from 'react-native';
 import axios from "axios";
-import {Camera, CameraType} from 'expo-camera';
+import { Camera, CameraType } from 'expo-camera';
 import CameraIcon from "../assets/icons/camera.png";
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import CameraScreen from "../screens/CameraScreen";
+import { Ionicons } from '@expo/vector-icons';
 
 
-const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
+const OrderModal = ({ selectedOrder, isModalVisible, handleCloseModal }) => {
     const navigation = useNavigation();
     const scaleValue = useRef(new Animated.Value(0)).current;
     const [coordinates, setCoordinates] = useState(null);
@@ -43,8 +44,8 @@ const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
         try {
             const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${api_key}`);
             if (response.data.status === 'OK') {
-                const {lat, lng} = response.data.results[0].geometry.location;
-                setCoordinates({lat, lng});
+                const { lat, lng } = response.data.results[0].geometry.location;
+                setCoordinates({ lat, lng });
                 const url = Platform.select({
                     ios: `maps:${lat},${lng}`,
                     android: `geo:${lat},${lng}?center=${lat},${lng}&q=${lat},${lng}&z=16`,
@@ -84,7 +85,7 @@ const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
     const VerificationCodeInput = () => {
         return (
             <View style={styles.inputContainer}>
-                <CameraComponent/>
+                <CameraComponent />
                 <TextInput
                     style={styles.input}
                     placeholder="Mã xác thực"
@@ -129,8 +130,8 @@ const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
 
                     }}
                 >
-                    <View style={styles.overlay}/>
-                    <Animated.View style={[styles.modalView, {transform: [{scale: scaleValue}]}]}>
+                    <View style={styles.overlay} />
+                    <Animated.View style={[styles.modalView, { transform: [{ scale: scaleValue }] }]}>
                         <TouchableOpacity
                             style={styles.closeButton}
                             onPress={(event) => {
@@ -143,16 +144,22 @@ const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
 
                         {selectedOrder && (
                             <>
-                                <Text style={{color: "#808080", fontStyle: 'italic', marginBottom: 16, marginTop: -10}}
-                                      onPress={(event) => event.stopPropagation()}>#{selectedOrder.id}</Text>
-                                <Text style={{fontSize: 36, fontWeight: 'bold', marginBottom: 16}}
-                                      onPress={(event) => event.stopPropagation()}>{selectedOrder.recipientName}</Text>
-                                <TouchableOpacity
-                                    onPress={() => setModalVisible(true)}
-                                    style={{padding: 10}}
-                                >
-                                    <Text style={{fontSize: 24}}>...</Text>
-                                </TouchableOpacity>
+                                <Text style={{ color: "#808080", fontStyle: 'italic', marginBottom: 16, marginTop: -10 }}
+                                    onPress={(event) => event.stopPropagation()}>#{selectedOrder.id}</Text>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+                                    <Text
+                                        style={{ fontSize: 36, fontWeight: 'bold',  }}
+                                        onPress={(event) => event.stopPropagation()}
+                                    >
+                                        {selectedOrder.recipientName}
+                                    </Text>
+                                    <TouchableOpacity
+                                        onPress={() => setModalVisible(true)}
+                                        style={{ padding: 10 }}
+                                    >
+                                        <Ionicons name="ellipsis-vertical" size={24} />
+                                    </TouchableOpacity>
+                                </View>
                                 <Modal
                                     animationType="slide"
                                     transparent={true}
@@ -160,7 +167,7 @@ const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
                                     onRequestClose={() => setModalVisible(false)}
                                 >
                                     <TouchableOpacity
-                                        style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
+                                        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
                                         onPress={() => setModalVisible(false)}
                                     >
                                         <View style={{
@@ -183,28 +190,28 @@ const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
                                             }}>
                                                 <Text>Đánh dấu đơn</Text>
                                             </Pressable>
-                                            <View style={{height: 1, backgroundColor: '#e0e0e0', marginVertical: 3}}/>
+                                            <View style={{ height: 1, backgroundColor: '#e0e0e0', marginVertical: 3 }} />
                                             <Pressable onPress={(event) => {
                                                 event.stopPropagation();
                                                 console.log('Option 2 pressed');
                                             }}>
                                                 <Text>Nhắc giao lại</Text>
                                             </Pressable>
-                                            <View style={{height: 1, backgroundColor: '#e0e0e0', marginVertical: 3}}/>
+                                            <View style={{ height: 1, backgroundColor: '#e0e0e0', marginVertical: 3 }} />
                                             <Pressable onPress={(event) => {
                                                 event.stopPropagation();
                                                 console.log('Option 3 pressed');
                                             }}>
                                                 <Text>Lưu kho</Text>
                                             </Pressable>
-                                            <View style={{height: 1, backgroundColor: '#e0e0e0', marginVertical: 10}}/>
+                                            <View style={{ height: 1, backgroundColor: '#e0e0e0', marginVertical: 10 }} />
                                             <Pressable onPress={(event) => {
                                                 event.stopPropagation();
                                                 console.log('Option 3 pressed');
                                             }}>
                                                 <Text>Liên hệ cửa hàng</Text>
                                             </Pressable>
-                                            <View style={{height: 1, backgroundColor: '#e0e0e0', marginVertical: 3}}/>
+                                            <View style={{ height: 1, backgroundColor: '#e0e0e0', marginVertical: 3 }} />
                                             <Pressable onPress={(event) => {
                                                 event.stopPropagation();
                                                 console.log('Option 3 pressed');
@@ -214,16 +221,16 @@ const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
 
                                             {/* End replace */}
 
-                                        <View style={{height: 1, backgroundColor: '#e0e0e0', marginVertical: 3}}/>
-                                        <Pressable onPress={(event) => {
-                                            event.stopPropagation();
-                                            console.log('Option 3 pressed');
-                                        }}>
-                                            <Text>Hoàn hàng</Text>
-                                        </Pressable>
+                                            <View style={{ height: 1, backgroundColor: '#e0e0e0', marginVertical: 3 }} />
+                                            <Pressable onPress={(event) => {
+                                                event.stopPropagation();
+                                                console.log('Option 3 pressed');
+                                            }}>
+                                                <Text>Hoàn hàng</Text>
+                                            </Pressable>
 
-                                        {/* End replace */}
-                                    </View>
+                                            {/* End replace */}
+                                        </View>
                                     </TouchableOpacity>
                                 </Modal>
 
@@ -234,33 +241,33 @@ const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
                                         alignItems: 'center',
                                         marginBottom: 16
                                     }}>
-                                    <Text style={{fontSize: 16, flexShrink: 1}}
-                                          onPress={(event) => event.stopPropagation()}>{selectedOrder.address}</Text>
+                                    <Text style={{ fontSize: 16, flexShrink: 1 }}
+                                        onPress={(event) => event.stopPropagation()}>{selectedOrder.address}</Text>
                                     <TouchableOpacity
-                                        style={{...styles.directButton}}
+                                        style={{ ...styles.directButton }}
                                         onPress={(event) => {
                                             event.stopPropagation();
                                             getCoordinates(selectedOrder.address);
                                         }}
                                     >
-                                        <Text style={{color: "#0000FF"}}>Chỉ đường</Text>
+                                        <Text style={{ color: "#0000FF" }}>Chỉ đường</Text>
                                     </TouchableOpacity>
                                 </View>
-                                <View style={{flexDirection: 'row', flexWrap: 'wrap', marginBottom: 16, marginEnd: 50}}>
-                                    <Text style={{color: "#808080"}}>{selectedOrder.tags.join(', ')}</Text>
+                                <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 16, marginEnd: 50 }}>
+                                    <Text style={{ color: "#808080" }}>{selectedOrder.tags.join(', ')}</Text>
                                 </View>
                                 <View style={{
                                     flexDirection: 'row',
                                     justifyContent: 'space-between',
                                     alignItems: 'center'
                                 }}>
-                                    <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 8}}
-                                          onPress={(event) => event.stopPropagation()}>Tổng tiền:</Text>
-                                    <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 8}}
-                                          onPress={(event) => event.stopPropagation()}>{selectedOrder.totalAmount.toLocaleString('vi-VN', {
-                                        style: 'currency',
-                                        currency: 'VND'
-                                    })}</Text>
+                                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 8 }}
+                                        onPress={(event) => event.stopPropagation()}>Tổng tiền:</Text>
+                                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 8 }}
+                                        onPress={(event) => event.stopPropagation()}>{selectedOrder.totalAmount.toLocaleString('vi-VN', {
+                                            style: 'currency',
+                                            currency: 'VND'
+                                        })}</Text>
                                 </View>
                             </>
                         )}
@@ -281,9 +288,9 @@ const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
                             // </View>
                             VerificationCodeInput()
                         )}
-                        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <TouchableOpacity
-                                style={{...styles.openButton, backgroundColor: "#4F46E5"}}
+                                style={{ ...styles.openButton, backgroundColor: "#4F46E5" }}
                                 onPress={(event) => {
                                     event.stopPropagation();
                                     Linking.openURL(`tel:${selectedOrder.phoneNumber}`);
@@ -292,7 +299,7 @@ const OrderModal = ({selectedOrder, isModalVisible, handleCloseModal}) => {
                                 <Text style={styles.textStyle}>Gọi</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                style={{...styles.openButton, backgroundColor: "#4CAF50"}}
+                                style={{ ...styles.openButton, backgroundColor: "#4CAF50" }}
                                 onPress={handleComplete}
                             >
                                 <Text style={styles.textStyle}>Hoàn thành</Text>

@@ -9,17 +9,44 @@ import StatisticsScreen from './screens/StatisticsScreen';
 import PersonalScreen from './screens/PersonalScreen';
 import CameraScreen from './screens/CameraScreen';
 import NotificationScreen from './screens/NotificationScreen';
+import ChangePasswordScreen from './screens/ChangePasswordScreen';
+import { S } from '@expo/html-elements';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+import { Ionicons } from '@expo/vector-icons';
+
 function MainScreen() {
     return (
         <Tab.Navigator initialRouteName="OrderList">
-            <Tab.Screen name="Danh sách vận đơn" component={OrderListScreen} />
-            <Tab.Screen name="Bản đồ" component={MapScreen} />
-            <Tab.Screen name="Thống kê" component={StatisticsScreen} />
-            <Tab.Screen name="Cá nhân" component={PersonalScreen} />
+            <Tab.Screen 
+                name="Danh sách vận đơn" 
+                component={OrderListScreen} 
+                options={{
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons name="list" color={color} size={size} />
+                    ),
+                }}
+            />
+            <Tab.Screen 
+                name="Thống kê" 
+                component={StatisticsScreen} 
+                options={{
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons name="stats-chart" color={color} size={size} />
+                    ),
+                }}
+            />
+            <Tab.Screen 
+                name="Cá nhân" 
+                component={PersonalScreen} 
+                options={{
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons name="person" color={color} size={size} />
+                    ),
+                }}
+            />
         </Tab.Navigator>
     );
 }
@@ -32,6 +59,11 @@ export default function App() {
                 <Stack.Screen name="Main" component={MainScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="CameraScreen" component={CameraScreen} />
                 <Stack.Screen name="NotificationScreen" component={NotificationScreen}     options={{ title: 'Thông báo' }} />
+                <Stack.Screen name="MapScreen" component={MapScreen} options={{ title: 'Bảo trì' }}/>
+                <Stack.Screen name="StatisticsScreen" component={StatisticsScreen} />
+                <Stack.Screen name="PersonalScreen" component={PersonalScreen} />
+                <Stack.Screen name="OrderListScreen" component={OrderListScreen} />
+                <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     );

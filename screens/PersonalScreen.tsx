@@ -37,21 +37,21 @@ const PersonalScreen = ({ navigation }) => {
 
             <Text style={styles.sectionHeader}>Tài khoản</Text>
             <View style={styles.settingsContainer}>
-                <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('PersonalizationScreen')}>
+                <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('MapScreen')}>
                     <View style={styles.settingContent}>
                         <Icon name="person-outline" size={20} color="#000" />
                         <Text style={styles.settingText}>Cá nhân hoá</Text>
                     </View>
                     <Icon name="chevron-forward-outline" size={20} color="#ccc" />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('PasswordScreen')}>
+                <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('ChangePasswordScreen')}>
                     <View style={styles.settingContent}>
                         <Icon name="lock-closed-outline" size={20} color="#000" />
                         <Text style={styles.settingText}>Mật khẩu</Text>
                     </View>
                     <Icon name="chevron-forward-outline" size={20} color="#ccc" />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('NotificationsScreen')}>
+                <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('NotificationScreen')}>
                     <View style={styles.settingContent}>
                         <Icon name="notifications-outline" size={20} color="#000" />
                         <Text style={styles.settingText}>Thông báo</Text>
@@ -62,14 +62,14 @@ const PersonalScreen = ({ navigation }) => {
 
             <Text style={styles.sectionHeader}>Thêm</Text>
             <View style={styles.settingsContainer}>
-                <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('RegionRegistrationScreen')}>
+                <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('MapScreen')}>
                     <View style={styles.settingContent}>
                         <Icon name="star-outline" size={20} color="#000" />
                         <Text style={styles.settingText}>Đăng ký khu vực</Text>
                     </View>
                     <Icon name="chevron-forward-outline" size={20} color="#ccc" />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('SupportScreen')}>
+                <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('MapScreen')}>
                     <View style={styles.settingContent}>
                         <Icon name="help-circle-outline" size={20} color="#000" />
                         <Text style={styles.settingText}>Hỗ trợ</Text>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 
 const screenWidth = Dimensions.get('window').width;
@@ -14,12 +14,12 @@ const StatisticsScreen = () => {
     ];
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Thống kê</Text>
+        <ScrollView style={styles.container}>
+            {/* <Text style={styles.title}>Thống kê</Text> */}
 
             <PieChart
                 data={data}
-                width={screenWidth}
+                width={screenWidth - 32}
                 height={220}
                 chartConfig={{
                     backgroundColor: '#1cc910',
@@ -33,52 +33,45 @@ const StatisticsScreen = () => {
                 absolute
             />
 
-            <View style={styles.statisticsContainer}>
-                <View style={styles.statBox}>
-                    <Text style={styles.statText}>Thu nhập hôm nay</Text>
+            <View style={styles.incomeContainer}>
+                <View style={[styles.statBox, styles.incomeBox]}>
+                    <Text style={styles.statTitle}>Thu nhập hôm nay</Text>
                     <Text style={styles.statValue}>2 482 000 VND</Text>
                 </View>
-                <View style={styles.statBox}>
-                    <Text style={styles.statText}>Tháng này</Text>
+                <View style={[styles.statBox, styles.monthBox]}>
+                    <Text style={styles.statTitle}>Tháng này</Text>
                     <Text style={styles.statValue}>23 982 240 VND</Text>
                 </View>
-                <View style={styles.statBox}>
-                    <Text style={styles.statText}>Thưởng năng suất</Text>
+                <View style={[styles.statBox, styles.bonusBox]}>
+                    <Text style={styles.statTitle}>Thưởng năng suất</Text>
                     <Text style={styles.statValue}>+624 000 VND</Text>
                 </View>
             </View>
 
             <View style={styles.statisticsContainer}>
-                <View style={styles.statBox}>
+                <View style={[styles.statBox, styles.orderBox]}>
                     <Text style={styles.statText}>Lượng đơn</Text>
                     <Text style={styles.statValue}>642</Text>
                 </View>
-                <View style={styles.statBox}>
+                <View style={[styles.statBox, styles.efficiencyBox]}>
                     <Text style={styles.statText}>Hiệu suất</Text>
                     <Text style={styles.statValue}>94.3%</Text>
                 </View>
             </View>
 
             <View style={styles.statisticsContainer}>
-                <View style={styles.statBox}>
+                <View style={[styles.statBox, styles.delayBox]}>
                     <Text style={styles.statText}>Trễ</Text>
                     <Text style={styles.statValue}>18</Text>
                 </View>
-                <View style={styles.statBox}>
+                <View style={[styles.statBox, styles.rateBox]}>
                     <Text style={styles.statText}>Tỉ lệ</Text>
                     <Text style={styles.statValue}>3.4%</Text>
                 </View>
             </View>
 
-            <View style={styles.section}>
-                <Text style={styles.info}>Tổng số đơn hàng: 158</Text>
-                <Text style={styles.info}>Đã giao: 78</Text>
-                <Text style={styles.info}>Chưa giao: 42</Text>
-                <Text style={styles.info}>Đã lấy: 23</Text>
-                <Text style={styles.info}>Chưa lấy: 10</Text>
-                <Text style={styles.info}>Đơn trễ: 5</Text>
-            </View>
-        </View>
+        
+        </ScrollView>
     );
 };
 
@@ -92,35 +85,68 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 16,
+        textAlign: 'center',
     },
     statisticsContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 16,
     },
+    incomeContainer: {
+        flexDirection: 'column',
+        marginBottom: 16,
+    },
+    section: {
+        marginBottom: 16,
+    },
     statBox: {
         flex: 1,
-        backgroundColor: '#1e88e5',
-        padding: 10,
+        padding: 20,
+        margin: 5,
         borderRadius: 10,
         alignItems: 'center',
-        marginHorizontal: 5,
+        marginBottom: 10,
+    },
+    incomeBox: {
+        backgroundColor: '#002984',
+    },
+    monthBox: {
+        backgroundColor: '#002984',
+    },
+    bonusBox: {
+        backgroundColor: '#002984',
+    },
+    orderBox: {
+        backgroundColor: '#1e88e5',
+    },
+    efficiencyBox: {
+        backgroundColor: '#ffa000',
+    },
+    delayBox: {
+        backgroundColor: '#ff5252',
+    },
+    rateBox: {
+        backgroundColor: '#ffca28',
     },
     statText: {
         color: '#fff',
         fontSize: 16,
     },
+    statTitle: {
+        color: '#fff',
+        fontSize: 14,
+        textAlign: 'center',
+    },
     statValue: {
         color: '#fff',
-        fontSize: 20,
+        fontSize: 24,
         fontWeight: 'bold',
-    },
-    section: {
-        marginBottom: 16,
+        textAlign: 'center',
     },
     info: {
         fontSize: 18,
         marginBottom: 8,
+        textAlign: 'center',
     },
 });
 

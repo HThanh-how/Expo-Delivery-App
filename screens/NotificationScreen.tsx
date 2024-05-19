@@ -72,7 +72,7 @@ export default function OrderListScreen() {
     return (
         <View style={styles.container}>
 
-            <View style={styles.header}>
+            {/* <View style={styles.header}>
                 <Image source={BellIcon} style={styles.notificationIcon} />
 
                 <TextInput
@@ -80,7 +80,7 @@ export default function OrderListScreen() {
                     placeholder="Tìm kiếm..."
                 />
                 <Image source={QRCodeIcon} style={styles.QrIcon} />
-            </View>
+            </View> */}
             <FlatList
                 data={[orderPriority, orderNonPriority]}
                 keyExtractor={(item, index) => index.toString()}
