@@ -10,7 +10,7 @@ import PersonalScreen from './screens/PersonalScreen';
 import CameraScreen from './screens/CameraScreen';
 import NotificationScreen from './screens/NotificationScreen';
 import ChangePasswordScreen from './screens/ChangePasswordScreen';
-import { S } from '@expo/html-elements';
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -57,13 +57,14 @@ export default function App() {
             <Stack.Navigator initialRouteName="Login">
                 <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="Main" component={MainScreen} options={{ headerShown: false }} />
-                <Stack.Screen name="CameraScreen" component={CameraScreen} />
+                {/* <Stack.Screen name="CameraScreen" component={CameraScreen} /> */}
+                {/* <Stack.Screen name="CameraScreen" component={CameraScreen} options={{ title: 'Chụp ảnh' }}/> */}
                 <Stack.Screen name="NotificationScreen" component={NotificationScreen}     options={{ title: 'Thông báo' }} />
                 <Stack.Screen name="MapScreen" component={MapScreen} options={{ title: 'Bảo trì' }}/>
                 <Stack.Screen name="StatisticsScreen" component={StatisticsScreen} />
                 <Stack.Screen name="PersonalScreen" component={PersonalScreen} />
                 <Stack.Screen name="OrderListScreen" component={OrderListScreen} />
-                <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} />
+                <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen}  options={{title: 'Đổi mật khẩu'}}/>
             </Stack.Navigator>
         </NavigationContainer>
     );

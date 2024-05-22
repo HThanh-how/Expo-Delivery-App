@@ -47,7 +47,7 @@ const PersonalScreen = ({ navigation }) => {
                 <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('ChangePasswordScreen')}>
                     <View style={styles.settingContent}>
                         <Icon name="lock-closed-outline" size={20} color="#000" />
-                        <Text style={styles.settingText}>Mật khẩu</Text>
+                        <Text style={styles.settingText}>Đổi mật khẩu</Text>
                     </View>
                     <Icon name="chevron-forward-outline" size={20} color="#ccc" />
                 </TouchableOpacity>

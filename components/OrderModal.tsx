@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Alert } from 'react-native';
 import {
     View,
     Text,
@@ -30,7 +31,20 @@ const OrderModal = ({ selectedOrder, isModalVisible, handleCloseModal }) => {
 
     const handleComplete = (event) => {
         event.stopPropagation();
+        if (isDetailModalVisible) {
+            // Handle complete order
+            console.log('Order completed');
+            Alert.alert(
+                "Đơn hàng đã hoàn thành",
+                "Đơn hàng đã hoàn thành thành công",
+                [
+                    { text: "OK", onPress: () => console.log("OK Pressed") }
+                ],
+                { cancelable: false }
+            );
+        }
         setDetailModalVisible(true);
+
     };
 
     const handleCloseDetailModal = () => {
@@ -148,7 +162,7 @@ const OrderModal = ({ selectedOrder, isModalVisible, handleCloseModal }) => {
                                     onPress={(event) => event.stopPropagation()}>#{selectedOrder.id}</Text>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
                                     <Text
-                                        style={{ fontSize: 36, fontWeight: 'bold',  }}
+                                        style={{ fontSize: 36, fontWeight: 'bold', }}
                                         onPress={(event) => event.stopPropagation()}
                                     >
                                         {selectedOrder.recipientName}

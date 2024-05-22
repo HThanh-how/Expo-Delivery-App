@@ -7,6 +7,16 @@ import OrderModal from '../components/OrderModal';
 import axios from 'axios';
 import orders from '../_lib/api/apiSilde';
 
+function isToday(date) {
+    if (typeof date === 'string') {
+        date = new Date(date);
+    }
+
+    const today = new Date();
+    return date.getDate() === today.getDate() &&
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear();
+}
 
 export default function OrderListScreen() {
     const [selectedOrder, setSelectedOrder] = useState(null);
@@ -29,10 +39,10 @@ export default function OrderListScreen() {
 
     const [isPriorityVisible, setPriorityVisible] = useState(true);
     const [isNonPriorityVisible, setNonPriorityVisible] = useState(true);
-    
 
-    const orderPriority = orders.filter(order => order.priority);
-    const orderNonPriority = orders.filter(order => !order.priority);
+
+    const priorityOrders = orders.filter(order => isToday(order.timeRecieve));
+    const nonPriorityOrders = orders.filter(order => !isToday(order.timeRecieve));
     const OrderList = ({ data }) => (
         <FlatList
             data={data}
@@ -48,7 +58,8 @@ export default function OrderListScreen() {
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                margin: 20
+                margin: 5,
+                marginHorizontal: 20,
             }}>
                 <View style={{ flex: 1 }}>
                     <Text style={{ fontWeight: 'bold', margin: 4, fontSize: 20 }}>{item.recipientName}</Text>
@@ -62,7 +73,7 @@ export default function OrderListScreen() {
                     </View>
                 </View>
                 <Text style={{
-                    fontSize: 20,
+                    fontSize: 16,
                     color: "#6C7072"
                 }}>{formatTimeReceived(item.timeRecieve)}</Text>
             </View>
@@ -82,7 +93,7 @@ export default function OrderListScreen() {
                 <Image source={QRCodeIcon} style={styles.QrIcon} />
             </View> */}
             <FlatList
-                data={[orderPriority, orderNonPriority]}
+                data={[priorityOrders, nonPriorityOrders]}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => {
                     const isVisible = index === 0 ? isPriorityVisible : isNonPriorityVisible;
@@ -94,7 +105,7 @@ export default function OrderListScreen() {
                                 style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 10 }}
                                 onPress={() => setVisible(!isVisible)}
                             >
-                                <Text style={{ fontWeight: 'bold', fontSize: 24 }}>{index === 0 ? 'Ưu tiên' : 'Bình thường'}</Text>
+                                <Text style={{ fontWeight: 'bold', fontSize: 24 }}>{index === 0 ? 'Gần đây' : 'Cũ hơn'}</Text>
                                 <Text style={{ color: "#6C7072" }}>Tổng cộng: {item.length}</Text>
                             </TouchableOpacity>
                             {isVisible && <OrderList data={item} />}
@@ -113,36 +124,36 @@ export default function OrderListScreen() {
 
 
 function formatTimeReceived(timeReceived: string): string {
-let now = new Date();
-let timeReceivedDate = new Date(timeReceived);   
-  const diffInSeconds = Math.floor((now.getTime() - timeReceivedDate.getTime()) / 1000);
-  const diffInMinutes = Math.floor(diffInSeconds / 60);
-  const diffInHours = Math.floor(diffInMinutes / 60);
-  const diffInDays = Math.floor(diffInHours / 24);
-  const diffInMonths = Math.floor(diffInDays / 30);
-  const diffInYears = Math.floor(diffInDays / 365);
+    let now = new Date();
+    let timeReceivedDate = new Date(timeReceived);
+    const diffInSeconds = Math.floor((now.getTime() - timeReceivedDate.getTime()) / 1000);
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
+    const diffInMonths = Math.floor(diffInDays / 30);
+    const diffInYears = Math.floor(diffInDays / 365);
 
-  if (diffInSeconds < 30) {
-    return "Mới nhất";
-  } else if (diffInSeconds < 60) {
-    return "Gần đây";
-  } else if (diffInMinutes < 60) {
-    return `${diffInMinutes} phút`;
-  } else if (diffInHours < 10) {
-    return `${diffInHours} giờ`;
-  } else if (diffInHours < 24) {
-    return "Hôm nay";
-  } else if (diffInDays === 1) {
-    return "Hôm qua";
-  } else if (diffInDays === 2) {
-    return "Hôm kia";
-  } else if (diffInDays < 30) {
-    return `${diffInDays} ngày`;
-  } else if (diffInMonths < 12) {
-    return `${diffInMonths} tháng`;
-  } else {
-    return `${diffInYears} năm`;
-  }
+    if (diffInSeconds < 30) {
+        return "Mới nhất";
+    } else if (diffInSeconds < 60) {
+        return "Gần đây";
+    } else if (diffInMinutes < 60) {
+        return `${diffInMinutes} phút`;
+    } else if (diffInHours < 6) {
+        return `${diffInHours} giờ`;
+    } else if (diffInHours < 12) {
+        return "Hôm nay";
+    } else if (diffInDays === 1 || (diffInHours < 24 )){
+        return "Hôm qua";
+    } else if (diffInDays === 2) {
+        return "Hôm kia";
+    } else if (diffInDays < 30) {
+        return `${diffInDays} ngày`;
+    } else if (diffInMonths < 12) {
+        return `${diffInMonths} tháng`;
+    } else {
+        return `${diffInYears} năm`;
+    }
 }
 const renderBadge = (tag, index) => {
     const badgeColors = {
